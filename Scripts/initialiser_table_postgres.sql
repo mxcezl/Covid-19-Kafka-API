@@ -1,0 +1,1 @@
+INSERT INTO covid(id, data, date_update) VALUES (1, '{}', CURRENT_TIME);
