@@ -16,8 +16,8 @@ Auteurs : ***Maxence ZOLNIERUCK*** & ***Josue VIDREQUIN***
     - [Architecture applicative](#architecture-applicative)
       - [Producer n°1 : Récupération des données](#producer-n1--récupération-des-données)
       - [Consumer n°1 : Stockage en base de données](#consumer-n1--stockage-en-base-de-données)
-      - [Pr2Cs3](#pr2cs3)
-      - [Cs2Pr3](#cs2pr3)
+      - [Producer n°2 & Consumer n°3 : Interface client et saisie de commandes](#producer-n2--consumer-n3--interface-client-et-saisie-de-commandes)
+      - [Consumer n°2 & Producer n°3 : Interrogation de la base de données et calculs](#consumer-n2--producer-n3--interrogation-de-la-base-de-données-et-calculs)
     - [Base de données](#base-de-données)
     - [Format des données](#format-des-données)
     - [Reception des resultats](#reception-des-resultats)
@@ -142,13 +142,13 @@ Du côté Consumer n°1, le module est en attente constante de nouveaux messages
 
 ![Partie Consumer n°1](./Images/partie_cs1.png)
 
-#### Pr2Cs3
+#### Producer n°2 & Consumer n°3 : Interface client et saisie de commandes
 
 Le module le plus lourd est celui-ci étant donné qu'il embarque à la fois : une partie consumer, une partie producer et une partie invité de commande pour que l'utilisateur saisisse ses requêtes. Cependant, son fonctionnement est assez simple. Après avoir demandé à l'utilisateur la commande qu'il souhaite exécuter, le module vérifie que celle-ci est bien valide et qu'elle pourra être exécutée côté [Cs2Pr3](#cs2pr3) sans aucun soucis. Ensuite, la commande est envoyée via le topic n°2 et sera exécutée par l'autre module. Lorsque la requête aura été exécutée, notre module récupèrera le résultat dans le topic n°3 afin de l'afficher à l'écran pour l'utilisateur.
 
 ![Partie Producer n°2 & Consumer n°3](./Images/partie_pr2cs3.png)
 
-#### Cs2Pr3
+#### Consumer n°2 & Producer n°3 : Interrogation de la base de données et calculs
 
 Ce module fait office d'interface avec la base de donnée et de brique de calcul. En effet, ce module lit des commandes utilisateurs à travers le topic n°2 qu'il transcode en requête SQL pour intérroger la base de données. Une fois les données reçues, un enchainement de calculs est exécuté pour répondre à la demande utilisateur. Enfin, ce resultat est communiqué au module appelant via le topic n°3.
 
