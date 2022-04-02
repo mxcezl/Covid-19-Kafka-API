@@ -26,7 +26,7 @@ Auteurs : ***Maxence ZOLNIERUCK*** & ***Josue VIDREQUIN***
 
 Ce dépôt GitHub fait office de rendu de projet dans le cadre du module Intergiciel à l'INSA Hauts-de-France. Le but de ce projet est d'utiliser un bus de messages Kafka afin de faire communiquer plusieurs projets Java. L'application finale est utilisable via ligne de commandes et restitue plusieurs informations et statistiques calculés grâce aux données de l'API publique <https://api.covid19api.com>.
 
-> Vous pouvez visualiser les données de cette API dans ce [fichier](covid_api.json).
+> Vous pouvez visualiser les données de cette API dans ce [fichier](./Data/covid_api.json).
 
 Parmis les valeurs que nous restituons, nous retrouvons : le nombre total de cas confirmés, le nombre total de personnes décédées, le nombre de nouveaux cas, le nombre de nouveaux décès et enfin, le nombre de personnes rétablies. Ces données sont regroupées soit par pays, soit à l'international avec des valeurs cumulées.
 
