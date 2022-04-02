@@ -12,6 +12,10 @@ Auteurs : ***Maxence ZOLNIERUCK*** & ***Josue VIDREQUIN***
     - [Topics Kafka](#topics-kafka)
     - [Base de données PostgreSQL](#base-de-données-postgresql)
     - [Consumers & Producers Kafa Java](#consumers--producers-kafa-java)
+      - [Producer 1 : Récupération des données](#producer-1--récupération-des-données)
+      - [Cs1](#cs1)
+      - [Pr2Cs3](#pr2cs3)
+      - [Cs2Pr3](#cs2pr3)
   - [Problèmes connus](#problèmes-connus)
   - [Points techniques](#points-techniques)
     - [Architecture applicative](#architecture-applicative)
@@ -81,7 +85,7 @@ Bien, nous avons passé la première étape, intéressons nous maintenant à la 
 
 Pour ce projet nous utilisons une base de données PostgreSQL car elle permet de stocker des valeurs au format JSON directement. Chose très utile pour nous qui utilisons une API publique nous retournant les valeurs au format JSON. De ce fait, après quelques traitements, nous pouvons directement stocker le resultat de l'appel dans la base de données.
 
-Nous avons utilisé une image docker pour heberger notre base de données. Vous pouvez retrouver le [docker-compose](docker-compose.yml) a la racine de ce repértoire pour lancer vous même l'image docker.
+Nous avons utilisé une image docker pour heberger notre base de données. Vous pouvez retrouver le [docker-compose.yml](docker-compose.yml) a la racine de ce repértoire pour lancer vous même l'image docker.
 
 La base de données sera accessible via l'adresse `http://localhost:5432/HOPSIIA`.
 
@@ -89,13 +93,44 @@ Ensuite, vous pouvez utiliser l'outil [pgAdmin](https://www.pgadmin.org/) mis à
 
 ![image info](./Images/pgadmin_db.png)
 
-Maintenant que la base de données a été créée, il faut instancier la table qui accueillera les données de l'API Covid-19. Pour cela, vous avez à votre disposition un [script SQL](./Scripts/creation_table_postgres.sql) dans ce dépot pour la création de la table **covid**.
+Maintenant que la base de données a été créée, il faut instancier la table qui accueillera les données de l'API Covid-19. Pour cela, vous avez à votre disposition le script [creation_table_postgres.sql](./Scripts/creation_table_postgres.sql) dans ce dépot pour la création de la table **covid**.
 
 Ensuite, il faut initialiser la table avec un enregistrement vide. Pour cela, exécutez la requête qui se trouve dans [initialiser_table_postgres.sql](./Scripts/initialiser_table_postgres.sql).
 
 Le second point de ce projet est prêt. Cette base de données sera alimentée grâce à deux projets Java : Cs1 (Consumer 1) et Pr1 (Producer 1) que nous allons aborder dès maintenant.
 
 ### Consumers & Producers Kafa Java
+
+Les consumers (Cs) et Producers (Pr) sont des applications Kafka permetant d'écrire dans un topic pour un Pr et de lire les messages pour un Cs. Dans notre projet, il y a 4 "briques" :
+
+- Pr1 : Lit les messages de l'API Covid
+- Cs1 : Mets à jour la base de données
+- Pr2Cs3 : L'invité de commande utilisé pour saisir les commandes
+- Cs2Pr3 : Communique avec la base de données et effectue des traitements spécifiques à la demande utilisateur reçue
+
+Ces briques Kafka communiquent entre elles via les topics créés précédemment à la section [Topics Kafa](#topics-kafka).
+
+Pour un peu plus de clareté, voici un schéma de l'architecture applicative de notre projet :
+
+![image info](./Images/architecture_applicative.png)
+
+#### Producer 1 : Récupération des données
+
+Ce projet fait un appel automatisé toutes les 30 minutes via la librairie [Quartz Scheduler](http://www.quartz-scheduler.org/) à l'[API Covid-19](https://api.covid19api.com). A chaque fois que le projet récupère les données de l'API, un léger traitement pour épurer le JSON en supprimant certains champs qui ne nous intéressent pas ici. Ensuite, le JSON nouvellement créé est transmis dans le topic n°1.
+
+![image info](./Images/partie_pr1.png)
+
+#### Cs1
+
+![image info](./Images/partie_cs1.png)
+
+#### Pr2Cs3
+
+![image info](./Images/partie_pr2cs3.png)
+
+#### Cs2Pr3
+
+![image info](./Images/partie_cs2pr3.png)
 
 ## Problèmes connus
 
