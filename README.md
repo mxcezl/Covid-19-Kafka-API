@@ -20,15 +20,16 @@ Auteurs : ***Maxence ZOLNIERUCK*** & ***Josue VIDREQUIN***
       - [Consumer n°2 & Producer n°3 : Interrogation de la base de données et calculs](#consumer-n2--producer-n3--interrogation-de-la-base-de-données-et-calculs)
     - [Base de données](#base-de-données)
     - [Format des données](#format-des-données)
-    - [Reception des resultats](#reception-des-resultats)
 
 ## Introduction
 
 Ce dépôt GitHub fait office de rendu de projet dans le cadre du module Intergiciel à l'INSA Hauts-de-France. Le but de ce projet est d'utiliser un bus de messages Kafka afin de faire communiquer plusieurs projets Java. L'application finale est utilisable via ligne de commandes et restitue plusieurs informations et statistiques calculés grâce aux données de l'API publique <https://api.covid19api.com>.
 
+> Vous pouvez visualiser les données de cette API dans ce [fichier](covid_api.json).
+
 Parmis les valeurs que nous restituons, nous retrouvons : le nombre total de cas confirmés, le nombre total de personnes décédées, le nombre de nouveaux cas, le nombre de nouveaux décès et enfin, le nombre de personnes rétablies. Ces données sont regroupées soit par pays, soit à l'international avec des valeurs cumulées.
 
-Toutes les données (sauf pour l'export) sont retournées à l'utilisateur au format JSON.
+Toutes les données (sauf pour l'export) sont retournées à l'utilisateur au format Json.
 
 ## Commandes
 
@@ -82,7 +83,7 @@ Bien, nous avons passé la première étape, intéressons nous maintenant à la 
 
 ### Base de données PostgreSQL
 
-Pour ce projet nous utilisons une base de données PostgreSQL car elle permet de stocker des valeurs au format JSON directement. Chose très utile pour nous qui utilisons une API publique nous retournant les valeurs au format JSON. De ce fait, après quelques traitements, nous pouvons directement stocker le resultat de l'appel dans la base de données.
+Pour ce projet nous utilisons une base de données PostgreSQL car elle permet de stocker des valeurs au format Json directement. Chose très utile pour nous qui utilisons une API publique nous retournant les valeurs au format Json. De ce fait, après quelques traitements, nous pouvons directement stocker le resultat de l'appel dans la base de données.
 
 Nous avons utilisé une image docker pour heberger notre base de données. Vous pouvez retrouver le [docker-compose.yml](docker-compose.yml) a la racine de ce repértoire pour lancer vous même l'image docker.
 
@@ -132,7 +133,7 @@ Pour un peu plus de clareté, voici un schéma de l'architecture applicative de 
 
 #### Producer n°1 : Récupération des données
 
-Ce projet fait un appel automatisé toutes les 30 minutes via la librairie [Quartz Scheduler](http://www.quartz-scheduler.org/) à l'[API Covid-19](https://api.covid19api.com). A chaque fois que le projet récupère les données de l'API, nous effectuons un léger traitement pour épurer le JSON en supprimant certains champs qui ne nous intéressent pas ici. Ensuite, le JSON nouvellement créé est envoyé dans le topic n°1.
+Ce projet fait un appel automatisé toutes les 30 minutes via la librairie [Quartz Scheduler](http://www.quartz-scheduler.org/) à l'[API Covid-19](https://api.covid19api.com). A chaque fois que le projet récupère les données de l'API, nous effectuons un léger traitement pour épurer le JSON en supprimant certains champs qui ne nous intéressent pas ici. Ensuite, le Json nouvellement créé est envoyé dans le topic n°1.
 
 ![Partie Producer n°1](./Images/partie_pr1.png)
 
@@ -156,6 +157,24 @@ Ce module fait office d'interface avec la base de donnée et de brique de calcul
 
 ### Base de données
 
+La base de données PostgreSQL comporte une unique table appelée `covid`. Dans cette table se trouve trois colonnes :
+
+| covid.id         | covid.data               | covid.date_update                                  |
+|------------------|--------------------------|----------------------------------------------------|
+| identifiant fixe | données de l'API en Json | Date et heure à la quelle la BDD a été mise à jour |
+
+Lorsque le [Cs1](#consumer-n1--stockage-en-base-de-données) souhaite effectuer une mise à jour de la base de données, il va dans les faits venir écraser le seul enregistrement. Pour cela, l'enregistrement possède un identifiant unique : `covid.id = 1`.
+
+De ce fait, la requête SQL exécutée par le [Cs1](#consumer-n1--stockage-en-base-de-données) pour mettre à jour la base de données est la suivante :
+
+> UPDATE public.covid SET data=`?1`, date_update=`?2` WHERE **id=1**;
+
+Nous voyons bien que les données contenues dans l'enregistrement portant l'identifiant n°1 seront écrasées par les nouvelles.
+
+Le champ `data` dans la base de données est au format [JsonB](https://www.postgresql.org/docs/13/datatype-json.html). Cela nous permet d'exécuter des requêtes tout en profitant des avantages du Json. Par exemple, pour la commande `get_country_values V_PAYS`, voici le type de requête exécutée :
+
+![Exemple JsonB](./Images/requete_jsonb.png)
+
 ### Format des données
 
-### Reception des resultats
+Les données de l'API ne sont considérées comme Json uniquement à partir du moment où elles sont stockées en base de données. Avant cela, dans le Producer n°1, dans le topic n°1 et dans le Consumer n°1, l'appel à l'API Covid-19 est récupéré comme une chaine de caractères à part entière. Le fait de le convertir en Json une foi en base de données nous permet d'effectuer des requêtes plus performantes et plus précises. Cela nous évite également de la compléxité au niveau des modules Pr1 et Cs1.
