@@ -12,8 +12,9 @@ Auteurs : ***Maxence ZOLNIERUCK*** & ***Josue VIDREQUIN***
     - [Topics Kafka](#topics-kafka)
     - [Base de données PostgreSQL](#base-de-données-postgresql)
     - [Consumers & Producers Kafa Java](#consumers--producers-kafa-java)
-  - [Points techniques](#points-techniques)
-    - [Architecture applicative](#architecture-applicative)
+      - [Problème possible](#problème-possible)
+  - [Architecture applicative](#architecture-applicative)
+    - [Consumers et Producers](#consumers-et-producers)
       - [Producer n°1 : Récupération des données](#producer-n1--récupération-des-données)
       - [Consumer n°1 : Stockage en base de données](#consumer-n1--stockage-en-base-de-données)
       - [Producer n°2 & Consumer n°3 : Interface client et saisie de commandes](#producer-n2--consumer-n3--interface-client-et-saisie-de-commandes)
@@ -114,9 +115,17 @@ Vous pouvez les importer dans le workspace de votre IDE favori (pour nous c'est 
 
 Tous les projets ont une classe portant comme nom `XXX`MainClass où `XXX` est le nom du projet. Par exemple : [Pr1MainClass.java](./Sources/pr1/src/main/java/pr1/Pr1MainClass.java). Ce sera ces classes qu'il faut démarrer pour lancer le module.
 
-## Points techniques
+#### Problème possible
 
-### Architecture applicative
+Il est possible que l'export des données n'affiche rien dans la console Eclipse. Si cela est le cas, c'est car Eclipse limite la taille des messages à afficher.
+
+Pour modifier ce paramètre, aller dans `Window > Preferences > Run/Debug > Console` puis redéfinissez les paramètres tels que :
+
+![Paramètres Eclipse](./Images/parametre_console_eclipse.png)
+
+## Architecture applicative
+
+### Consumers et Producers
 
 Les consumers (Cs) et Producers (Pr) sont des applications Kafka permetant d'écrire dans un topic pour un Pr et de lire les messages pour un Cs. Dans notre projet, il y a 4 "briques" :
 
