@@ -1,6 +1,10 @@
 # TP Intergiciel - Kafka
 
-Auteurs : ***Maxence ZOLNIERUCK*** & ***Josue VIDREQUIN***
+Auteurs : ***[Maxence ZOLNIERUCK](https://github.com/mxcezl)*** & ***[Josue VIDREQUIN](https://github.com/josuvidr)***
+
+École : **[INSA Hauts-de-France](https://www.insa-hautsdefrance.fr/)**
+
+Promotion : **FISA 4 Informatique**
 
 ## Sommaire
 
