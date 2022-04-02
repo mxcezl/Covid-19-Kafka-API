@@ -70,9 +70,9 @@ Tout d'abord, il vous faut avoir installé Kafka sur votre PC. Pour notre part, 
 
 Si vous rencontrez des problèmes pour l'installation de Kafka, nous vous recommandons ce tutoriel que nous avons suivi pour ce TP : <https://www.geeksforgeeks.org/how-to-install-and-run-apache-kafka-on-windows/>
 
-Une fois Kafka installé, vous pouvez utiliser le script [demarrage_kafka_zookeeper.bat](./Scripts/demarrage_kafka_zookeeper.bat) afin de démarrer les services `Kafka` et `Zookeeper`.
+Une fois Kafka installé, vous pouvez utiliser le script [demarrage_kafka_zookeeper.bat](./Scripts/Kafka/demarrage_kafka_zookeeper.bat) afin de démarrer les services `Kafka` et `Zookeeper`.
 
-Maintenant, nous allons passer à la création des topics qui seront utilisés par les applications Java. Pour cela, le script [creation_topics_kafka.bat](./Scripts/creation_topics_kafka.bat) a été créé.
+Maintenant, nous allons passer à la création des topics qui seront utilisés par les applications Java. Pour cela, le script [creation_topics_kafka.bat](./Scripts/Kafka/creation_topics_kafka.bat) a été créé.
 
 Finalement, après avoir démarré Kafka et créé les topics, nous pouvons tester le bon fonctionnement des scripts avec la commande :
 
@@ -94,9 +94,9 @@ Ensuite, vous pouvez utiliser l'outil [pgAdmin](https://www.pgadmin.org/) mis à
 
 ![pgAdmin DB](./Images/pgadmin_db.png)
 
-Maintenant que la base de données a été créée, il faut instancier la table qui accueillera les données de l'API Covid-19. Pour cela, vous avez à votre disposition le script [creation_table_postgres.sql](./Scripts/creation_table_postgres.sql) dans ce dépot pour la création de la table **covid**.
+Maintenant que la base de données a été créée, il faut instancier la table qui accueillera les données de l'API Covid-19. Pour cela, vous avez à votre disposition le script [creation_table_postgres.sql](./Scripts/PostgreSQL/creation_table_postgres.sql) dans ce dépot pour la création de la table **covid**.
 
-Ensuite, il faut initialiser la table avec un enregistrement vide. Pour cela, exécutez la requête qui se trouve dans [initialiser_table_postgres.sql](./Scripts/initialiser_table_postgres.sql).
+Ensuite, il faut initialiser la table avec un enregistrement vide. Pour cela, exécutez la requête qui se trouve dans [initialiser_table_postgres.sql](./Scripts/PostgreSQL/initialiser_table_postgres.sql).
 
 Le second point de ce projet est prêt. Cette base de données sera alimentée grâce à deux projets Java : Cs1 (Consumer 1) et Pr1 (Producer 1) que nous allons aborder dès maintenant.
 
