@@ -28,7 +28,7 @@ Promotion : **FISA 4 Informatique**
 
 ## Introduction
 
-Ce dépôt GitHub fait office de rendu de projet dans le cadre du module Intergiciel à l'INSA Hauts-de-France. Le but de ce projet est d'utiliser un bus de messages Kafka afin de faire communiquer plusieurs projets Java. L'application finale est utilisable via ligne de commandes et restitue plusieurs informations et statistiques calculés grâce aux données de l'API publique <https://api.covid19api.com>.
+Ce dépôt GitHub fait office de rendu de projet dans le cadre du module Intergiciel à l'INSA Hauts-de-France. Le but de ce projet est d'utiliser un bus de messages Kafka afin de faire communiquer plusieurs projets Java. L'application finale est utilisable via ligne de commandes et restitue plusieurs informations et statistiques calculées grâce aux données de l'API publique <https://api.covid19api.com>.
 
 > Vous pouvez visualiser les données de cette API dans ce [fichier](./Data/covid_api.json).
 
@@ -190,4 +190,4 @@ Le champ `data` dans la base de données est au format [JsonB](https://www.postg
 
 ### Format des données
 
-Les données de l'API ne sont considérées comme Json uniquement à partir du moment où elles sont stockées en base de données. Avant cela, dans le Producer n°1, dans le topic n°1 et dans le Consumer n°1, l'appel à l'API Covid-19 est récupéré comme une chaine de caractères à part entière. Le fait de le convertir en Json une foi en base de données nous permet d'effectuer des requêtes plus performantes et plus précises. Cela nous évite également de la compléxité au niveau des modules Pr1 et Cs1.
+Les données de l'API ne sont considérées comme Json uniquement à partir du moment où elles sont stockées en base de données. Avant cela, dans le Producer n°1, dans le topic n°1 et dans le Consumer n°1, l'appel à l'API Covid-19 est récupéré comme une chaine de caractères à part entière. Le fait de le convertir en Json une fois en base de données nous permet d'effectuer des requêtes plus performantes et plus précises. Cela nous évite également de la compléxité au niveau des modules Pr1 et Cs1.
