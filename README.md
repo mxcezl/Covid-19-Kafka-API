@@ -4,8 +4,6 @@ Auteurs : ***[Maxence ZOLNIERUCK](https://github.com/mxcezl)*** & ***[Josue VIDR
 
 École : **[INSA Hauts-de-France](https://www.insa-hautsdefrance.fr/)**
 
-Promotion : **FISA 4 Informatique**
-
 ## Sommaire
 
 - [TP Intergiciel - Kafka](#tp-intergiciel---kafka)
